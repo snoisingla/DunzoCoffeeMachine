@@ -22,8 +22,7 @@ public class CoffeeMachineApplication {
     public static void main(String[] args) throws CoffeeMachineException, IOException, ParseException {
         String filePath = new File("").getAbsolutePath();
         CoffeeMachine coffeeMachine = getCoffeeMachineWithJSONDataFromFile(filePath + "/data/dunzo.json");
-        List<String> result = coffeeMachine.orderBeverages(new String[] {"hot_tea","black_tea","hot_coffee"});
-        result.stream().forEach(s -> System.out.println(s));
+        coffeeMachine.orderBeverages(new String[] {"hot_tea","black_tea","hot_coffee"});
     }
 
     private static CoffeeMachine getCoffeeMachineWithJSONDataFromFile(String filePath) throws IOException, ParseException {

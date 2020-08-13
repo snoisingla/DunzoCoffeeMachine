@@ -4,13 +4,11 @@ import com.dunzo.Beverage;
 import com.dunzo.CoffeeMachine;
 import com.dunzo.CoffeeMachineException;
 import com.dunzo.Ingredient;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CoffeeMachineTests {
 
@@ -24,25 +22,6 @@ public class CoffeeMachineTests {
         exception.expect(CoffeeMachineException.class);
         CoffeeMachine coffeeMachine = new CoffeeMachine(1, availableStock, beverages);
         coffeeMachine.orderBeverages(new String[]{"Hot Tea", "Hot Milk"});
-    }
-
-    @Test
-    public void getBeverages_Test_Should_Give_Three_Results() throws CoffeeMachineException {
-        List<Ingredient> availableStock = getAvailableStock();
-        List<Beverage> beverages = getBeverages();
-        CoffeeMachine coffeeMachine = new CoffeeMachine(3, availableStock, beverages);
-        List<String> result = coffeeMachine.orderBeverages(new String[]{"Hot Tea", "Hot Milk", "Coffee"});
-        Assert.assertEquals(result.size(),3);
-    }
-
-    @Test
-    public void getBeverages_Test_Should_Give_One_Failed_Beverages_Less_Qty() throws CoffeeMachineException {
-        List<Ingredient> availableStock = getAvailableStock();
-        List<Beverage> beverages = getBeverages();
-        CoffeeMachine coffeeMachine = new CoffeeMachine(3, availableStock, beverages);
-        List<String> result = coffeeMachine.orderBeverages(new String[]{"Hot Tea", "Hot Milk"});
-        List<String> failedToMakeBeverages = result.stream().filter(s -> s.contains("can't be ordered")).collect(Collectors.toList());
-        Assert.assertEquals(failedToMakeBeverages.size(), 1);
     }
 
     //dummy data
@@ -76,7 +55,7 @@ public class CoffeeMachineTests {
 
         List<Ingredient> ingredients1 = new ArrayList<>();
         Ingredient i111 = new Ingredient("Milk", 3);
-        Ingredient i112 = new Ingredient("Water", 6);
+        Ingredient i112 = new Ingredient("Water", 3);
         Ingredient i113 = new Ingredient("Sugar", 1);
         Ingredient i114 = new Ingredient("Tea Leaves", 0);
         ingredients1.add(i111);

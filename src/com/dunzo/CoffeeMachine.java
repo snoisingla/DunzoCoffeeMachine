@@ -32,13 +32,12 @@ public class CoffeeMachine {
      * @param orderedBeverageNamesArray is a String array for the beverages names to order.
      * @exception CoffeeMachineException
      */
-    public List<String> orderBeverages(String... orderedBeverageNamesArray) throws CoffeeMachineException {
+    public void orderBeverages(String... orderedBeverageNamesArray) throws CoffeeMachineException {
         List<String> orderedBeverageNames = new ArrayList<>(Arrays.asList(orderedBeverageNamesArray));
         if(orderedBeverageNames.size() > getOutlets()){
             throw new CoffeeMachineException("Outlets out of bound");
         }
 
-        List<String> result = new ArrayList<>();
         List<CompletableFuture> cfs = orderedBeverageNames.stream().map(beverageName -> {
             //Make each beverage in a parallel thread.
             return CompletableFuture.runAsync(() -> {
@@ -46,9 +45,9 @@ public class CoffeeMachine {
                     validateBeverage(beverageName);
                     Beverage beverage = beverageMap.get(beverageName);
                     stockManager.checkAndUpdateStock(beverage);
-                    result.add(beverageName+" is ready to serve");
+                    System.out.println(beverageName+" is ready to serve");
                 } catch (CoffeeMachineException ex){
-                    result.add(beverageName+" can't be ordered because "+ex.getMessage());
+                    System.out.println(beverageName+" can't be ordered because "+ex.getMessage());
                 }
             });
         }).collect(Collectors.toList());
@@ -56,7 +55,6 @@ public class CoffeeMachine {
         //Wait for all threads to complete.
         CompletableFuture[] cfsArray = cfs.stream().toArray(CompletableFuture[]::new);
         CompletableFuture.allOf(cfsArray).join();
-        return result;
     }
 
     private void validateBeverage(String beverageName) throws CoffeeMachineException {
